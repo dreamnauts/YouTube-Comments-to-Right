@@ -1,0 +1,10 @@
+{
+    "extension_name": {
+        "message": "YouTube Comments to Right",
+        "description": "The display name for the extension."
+    },
+    "extension_description": {
+        "message": "Move YouTube comments to the right side to help you read them while watching the video!",
+        "description": "Description of what the extension does."
+    }
+}

@@ -1,0 +1,63 @@
+:root {
+    color-scheme: light dark;
+}
+
+body {
+    width: 240px;
+    padding: 10px;
+
+    font-family: system-ui;
+    font-size: 12px;
+    text-align: center;
+    background-color: #E8F9FF;
+}
+
+#title {
+    font-size: 14px;
+}
+
+#icon {
+    margin-top: 10px;
+}
+
+#oops {
+    margin-top: 10px;
+}
+
+button {
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 15px;
+    background-color: #181717;
+    outline: 1px #181717 solid;
+    outline-offset: -1px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: 400ms;
+}
+
+button .text {
+    color: white;
+    font-weight: 700;
+    font-size: 1em;
+    margin: 0;
+    transition: 400ms;
+}
+
+button:hover {
+    background-color: transparent;
+}
+
+button:hover .text {
+    color: #181717;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+    /* Dark Mode styles go here. */
+}
