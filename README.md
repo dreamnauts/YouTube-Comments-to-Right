@@ -16,5 +16,5 @@ Available free in at [Mac App Store](https://apps.apple.com/us/app/youtube-comme
 
 This project is licensed under the [MIT License](./LICENSE)
 
-## Acknowledgments
+
 
