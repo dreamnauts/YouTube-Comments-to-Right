@@ -1,6 +1,6 @@
 # YouTube Comments to Right
 
-Mac Safari extention that automatically moves YouTube comments from below the video to the right.
+Mac Safari extension that automatically moves YouTube comments from below the video to the right.
 
 ## Getting Started
 
