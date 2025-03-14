@@ -22,7 +22,7 @@ browser.runtime.onMessage.addListener((request) => {
                         window.localStorage.setItem('force', 'true');
                     }
                     
-                    //console.log('no response from content.js... reloading tab');
+                    //console.log('[onMessage] no response from content.js... reloading tab');
                     browser.tabs.reload(tabs[0].id);
                 } else {
                     return Promise.resolve(response);
@@ -69,7 +69,7 @@ browser.tabs.onUpdated.addListener((tabId, change, tab) => {
             //Sometimes Safari won't inject content.js... reload tab when that happened
             browser.tabs.sendMessage(tab.id, {test: true}).then((response) => {
                 if (!response) {
-                    //console.log('no response from content.js... reloading tab');
+                    //console.log('[tab onUpdated] no response from content.js... reloading tab');
                     if (auto) browser.tabs.reload(tab.id);
                 }
             });
