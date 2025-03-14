@@ -15,9 +15,23 @@ document.addEventListener('yt-navigate-finish', (event) => {
     //Send message to background.js
     browser.runtime.sendMessage(message).then((response) => {
         //console.log('response received from background.js', response);
-        
         const auto = (response.value == 'false') ? false : true;
-        if (auto) move(1200);
+        
+        const message = {
+            type: 'background.js',
+            options: {
+                action: 'read',
+                key: 'force',
+                value: null
+            }
+        }
+        
+        //Check if this move is forced or not
+        browser.runtime.sendMessage(message).then((response) => {
+            const force = (response.value == 'true') ? true : false;
+            
+            if (auto || force) move(800);
+        });
     });
 });
 

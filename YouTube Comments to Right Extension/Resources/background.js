@@ -10,13 +10,18 @@ window.localStorage.setItem('auto', auto);
 
 //Event listener for message receive
 browser.runtime.onMessage.addListener((request) => {
-    console.log('message received: ', request);
+    //console.log('message received: ', request);
     
     if (request.type === 'content.js') {
         //Send message to content.js
         browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
             browser.tabs.sendMessage(tabs[0].id, request.options).then((response) => {
                 if (!response) {
+                    //Interval = 0 means, button pressed in popup.
+                    if (request.options.interval == 0) {
+                        window.localStorage.setItem('force', 'true');
+                    }
+                    
                     //console.log('no response from content.js... reloading tab');
                     browser.tabs.reload(tabs[0].id);
                 } else {
@@ -34,13 +39,17 @@ browser.runtime.onMessage.addListener((request) => {
         
         if (action == 'read') {
             const value = window.localStorage.getItem(key);
-            console.log('read', key, value);
+            //console.log('read', key, value);
+            
+            //If read request for 'force', flush storage because it is for one time use
+            if (key == 'force') window.localStorage.removeItem('force');
+            
             return Promise.resolve({value: value});
         }
         
         if (action == 'write') {
             window.localStorage.setItem(key, value);
-            console.log('write', key, value);
+            //console.log('write', key, value);
             return Promise.resolve({complete: true});
         }
     }
@@ -61,7 +70,7 @@ browser.tabs.onUpdated.addListener((tabId, change, tab) => {
             browser.tabs.sendMessage(tab.id, {test: true}).then((response) => {
                 if (!response) {
                     //console.log('no response from content.js... reloading tab');
-                    browser.tabs.reload(tab.id);
+                    if (auto) browser.tabs.reload(tab.id);
                 }
             });
         }
