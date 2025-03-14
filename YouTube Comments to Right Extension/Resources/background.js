@@ -1,9 +1,16 @@
-//console.log('background.js loaded...');
+console.log('background.js loaded...');
 
 var lastVideoId = '';
+var auto;
 
+//Load config from storage
+auto = window.localStorage.getItem('auto');
+auto = (auto == 'false') ? false : true;
+window.localStorage.setItem('auto', auto);
+
+//Event listener for message receive
 browser.runtime.onMessage.addListener((request) => {
-    //console.log('message received: ', request);
+    console.log('message received: ', request);
     
     if (request.type === 'content.js') {
         //Send message to content.js
@@ -18,8 +25,28 @@ browser.runtime.onMessage.addListener((request) => {
             });
         });
     }
+    
+    if (request.type === 'background.js') {
+        //Process within background.js
+        const action = request.options.action;
+        const key = request.options.key;
+        const value = request.options.value;
+        
+        if (action == 'read') {
+            const value = window.localStorage.getItem(key);
+            console.log('read', key, value);
+            return Promise.resolve({value: value});
+        }
+        
+        if (action == 'write') {
+            window.localStorage.setItem(key, value);
+            console.log('write', key, value);
+            return Promise.resolve({complete: true});
+        }
+    }
 });
 
+//Event listener for tab update
 browser.tabs.onUpdated.addListener((tabId, change, tab) => {
     var isVideoPage = /.+www.youtube.com\/watch\?.+/.test(tab.url);
     
@@ -30,6 +57,7 @@ browser.tabs.onUpdated.addListener((tabId, change, tab) => {
             //console.log('new video page opened ...');
             lastVideoId = videoId;
             
+            //Sometimes Safari won't inject content.js... reload tab when that happened
             browser.tabs.sendMessage(tab.id, {test: true}).then((response) => {
                 if (!response) {
                     //console.log('no response from content.js... reloading tab');
